@@ -14,19 +14,17 @@ async function main() {
   const args = process.argv;
   const params = args.slice(2);
 
-  if (params.length <= 0) throw new Error("Not enough arguments");
+  if (params.length != 1) throw new Error(`Expected 1 argument for contract address but received ${params.length} arguments.`);
   
   const contractAddress = params[0];
-  const targetAccount = params[1];
 
   console.log("Attaching to the deployed contract");
   let ballotContract: Ballot;
 
   const ballotContractFactory = new Ballot__factory(signer);
   ballotContract = await ballotContractFactory.attach(contractAddress);
-  const tx = await ballotContract.delegate(targetAccount);
-  const receipt = await tx.wait();
-  console.log({ receipt });
+  const winnerName = await ballotContract.winnerName();
+  console.log(`The winning proposal is ${ ethers.utils.parseBytes32String(winnerName) }`);
 }
 
 main().catch((error) => {

@@ -14,7 +14,7 @@ async function main() {
   const args = process.argv;
   const params = args.slice(2);
 
-  if (params.length <= 0) throw new Error("Not enough arguments");
+  if (params.length != 2) throw new Error(`Expected 2 arguments for contract address and target account but received ${params.length} argument(s).`);
   
   const contractAddress = params[0];
   const targetAccount = params[1];
